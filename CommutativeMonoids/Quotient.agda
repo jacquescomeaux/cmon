@@ -10,9 +10,12 @@ module CommutativeMonoids.Quotient
     (≋ : Congruence M)
   where
 
-open import CommutativeMonoids.Category using (CommutativeMonoidHomomorphism; mk-⇒)
+open import CommutativeMonoids.Category
+  using (CommutativeMonoidHomomorphism; mk-⇒; _≗_)
+  renaming (module CommutativeMonoids to CMon)
 open import Data.Product using (_,_)
 open import Function using (id)
+open import Relation.Binary using (_Preserves_⟶_)
 
 open Congruence ≋
 
@@ -20,8 +23,8 @@ private
   module M = CommutativeMonoid M
 
 -- Quotient of M by congruence relation
-M/~ : CommutativeMonoid c ℓ
-M/~ = record
+M/≋ : CommutativeMonoid c ℓ
+M/≋ = record
     { isCommutativeMonoid = record
         { isMonoid = record
             { isSemigroup = record
@@ -38,7 +41,7 @@ M/~ = record
     }
 
 -- The canonical projection into the quotient
-π : CommutativeMonoidHomomorphism M M/~
+π : CommutativeMonoidHomomorphism M M/≋
 π = mk-⇒ record
     { ⟦_⟧ = id
     ; isMonoidHomomorphism = record
@@ -49,3 +52,36 @@ M/~ = record
         ; ε-homo = refl (M.refl {M.ε})
         }
     }
+
+-- Universal property of the quotient
+module _
+    {N : CommutativeMonoid c ℓ}
+    -- A homomorphism that equates elements related by _≋_
+    {f : CommutativeMonoidHomomorphism M N}
+    (let private module N = CommutativeMonoid N)
+    (let private module f = CommutativeMonoidHomomorphism f)
+    (preserves-≋ : f.⟦_⟧ Preserves _≋_ ⟶ N._≈_)
+  where
+
+  -- The induced homomorphism out of the quotient
+  induced : CommutativeMonoidHomomorphism M/≋ N
+  induced = mk-⇒ record
+      { ⟦_⟧ = f.⟦_⟧
+      ; isMonoidHomomorphism = record
+          { isMagmaHomomorphism = record
+              { isRelHomomorphism = record { cong = preserves-≋ }
+              ; homo = f.homo
+              }
+          ; ε-homo = f.ε-homo
+          }
+      }
+
+  open CMon using (_∘_)
+
+  -- The equating homomorphism factors through the canonical projection via its induced homomorphism
+  factors : f ≗ induced ∘ π
+  factors x = N.refl
+
+  -- The induced homomorphism is the unique factorizing homomorphism
+  unique : {g : CommutativeMonoidHomomorphism M/≋ N} → f ≗ g ∘ π → g ≗ induced
+  unique f≗g∘π x = N.sym (f≗g∘π x)
