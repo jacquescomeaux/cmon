@@ -5,10 +5,10 @@ open import Level using (Level; _⊔_)
 open import Relation.Binary using (Rel; IsEquivalence; Setoid; _Preserves_⟶_)
 
 module CommutativeMonoids.CongruenceClosure
-    {c ℓ : Level}
-    (M : CommutativeMonoid c (c ⊔ ℓ))
+    {c ℓ ℓ′ : Level}
+    (M : CommutativeMonoid c (c ⊔ ℓ ⊔ ℓ′))
     (open CommutativeMonoid M)
-    (R : Rel Carrier ℓ)
+    (R : Rel Carrier ℓ′)
   where
 
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
@@ -26,7 +26,7 @@ private
     x y z : Carrier
 
 -- Symmetric context closure modulo equivalence of R
-record _~_ (x y : Carrier) : Set (c ⊔ ℓ) where
+record _~_ (x y : Carrier) : Set (c ⊔ ℓ ⊔ ℓ′) where
 
   constructor _~[_]_
 
@@ -62,7 +62,7 @@ infix 6 _~[_]_
         z ∙ y         ∎
 
 -- Congruence closure modulo equivalence of R
-data _≋_ : Rel Carrier (c ⊔ ℓ) where
+data _≋_ : Rel Carrier (c ⊔ ℓ ⊔ ℓ′) where
   base : x ≈ y → x ≋ y
   _◅_  : x ~ y → y ≋ z → x ≋ z
 
@@ -130,7 +130,7 @@ step-bwd {x} {y} xRy = one-step (sym (identityˡ y) ~[ bwd xRy ] identityˡ x)
 -- A proof that f equates elements related by R extends to
 -- a proof that f equates elements related by _≋_
 module _
-    {X : CommutativeMonoid c (c ⊔ ℓ)}
+    {X : CommutativeMonoid c (c ⊔ ℓ ⊔ ℓ′)}
     (f : CommutativeMonoidHomomorphism M X)
     (let private module X = CommutativeMonoid X)
     (let private module f = CommutativeMonoidHomomorphism f)

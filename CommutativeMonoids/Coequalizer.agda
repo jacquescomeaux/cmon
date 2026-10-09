@@ -12,7 +12,7 @@ module CommutativeMonoids.Coequalizer
     (f g : CommutativeMonoidHomomorphism A B)
   where
 
-import CommutativeMonoids.CongruenceClosure as CongruenceClosure
+import CommutativeMonoids.CongruenceClosure {c} {ℓ} as CongruenceClosure
 import CommutativeMonoids.Quotient as Quotient
 
 open import Categories.Diagram.Coequalizer (CommutativeMonoids c (c ⊔ ℓ)) using (Coequalizer)
@@ -34,7 +34,7 @@ private
 
 open B
 
-data _~_ : Rel Carrier (c ⊔ ℓ) where
+data _~_ : Rel Carrier c where
   f~g : (a : A.Carrier) → f.⟦ a ⟧ ~ g.⟦ a ⟧
 
 infix 4 _~_
