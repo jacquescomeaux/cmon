@@ -2,7 +2,7 @@
 
 open import Algebra using (CommutativeMonoid)
 open import Level using (Level; _⊔_)
-open import Relation.Binary using (Rel; IsEquivalence; Setoid)
+open import Relation.Binary using (Rel; IsEquivalence; Setoid; _Preserves_⟶_)
 
 module CommutativeMonoids.CongruenceClosure
     {c ℓ : Level}
@@ -126,3 +126,32 @@ step-fwd {x} {y} xRy = one-step (sym (identityˡ x) ~[ fwd xRy ] identityˡ y)
 
 step-bwd : R x y → y ≋ x
 step-bwd {x} {y} xRy = one-step (sym (identityˡ y) ~[ bwd xRy ] identityˡ x)
+
+-- A proof that f equates elements related by R extends to
+-- a proof that f equates elements related by _≋_
+module _
+    {X : CommutativeMonoid c (c ⊔ ℓ)}
+    (f : CommutativeMonoidHomomorphism M X)
+    (let private module X = CommutativeMonoid X)
+    (let private module f = CommutativeMonoidHomomorphism f)
+    (equates-R : f.⟦_⟧ Preserves R ⟶ X._≈_)
+  where
+
+  equates-Rₛ : f.⟦_⟧ Preserves (SymClosure R) ⟶ X._≈_
+  equates-Rₛ (fwd xRy) = equates-R xRy
+  equates-Rₛ (bwd yRx) = X.sym (equates-R yRx)
+
+  equates-~ : f.⟦_⟧ Preserves _~_ ⟶ X._≈_
+  equates-~ {x} {y} x~y = let open _~_ x~y in begin
+      f.⟦ x ⟧               ≈⟨ f.⟦⟧-cong x≈cu ⟩
+      f.⟦ ctx ∙ u ⟧         ≈⟨ f.homo ctx u ⟩
+      f.⟦ ctx ⟧ X.∙ f.⟦ u ⟧ ≈⟨ X.∙-congˡ (equates-Rₛ uRv) ⟩
+      f.⟦ ctx ⟧ X.∙ f.⟦ v ⟧ ≈⟨ f.homo ctx v ⟨
+      f.⟦ ctx ∙ v ⟧         ≈⟨ f.⟦⟧-cong cv≈y ⟩
+      f.⟦ y ⟧               ∎
+    where
+      open ≈-Reasoning X.setoid
+
+  equates-≋ : f.⟦_⟧ Preserves _≋_ ⟶ X._≈_
+  equates-≋ (base x≈y) = f.⟦⟧-cong x≈y
+  equates-≋ (x~z ◅[ z ] z≋y) = X.trans (equates-~ x~z) (equates-≋ z≋y)

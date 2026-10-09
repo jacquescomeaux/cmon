@@ -54,10 +54,10 @@ M/≋ = record
     }
 
 -- Universal property of the quotient
-module _
+module Universal
     {N : CommutativeMonoid c ℓ}
     -- A homomorphism that equates elements related by _≋_
-    {f : CommutativeMonoidHomomorphism M N}
+    (f : CommutativeMonoidHomomorphism M N)
     (let private module N = CommutativeMonoid N)
     (let private module f = CommutativeMonoidHomomorphism f)
     (preserves-≋ : f.⟦_⟧ Preserves _≋_ ⟶ N._≈_)
@@ -83,5 +83,5 @@ module _
   factors x = N.refl
 
   -- The induced homomorphism is the unique factorizing homomorphism
-  unique : {g : CommutativeMonoidHomomorphism M/≋ N} → f ≗ g ∘ π → g ≗ induced
-  unique f≗g∘π x = N.sym (f≗g∘π x)
+  unique : (g : CommutativeMonoidHomomorphism M/≋ N) → f ≗ g ∘ π → g ≗ induced
+  unique _ f≗g∘π x = N.sym (f≗g∘π x)
