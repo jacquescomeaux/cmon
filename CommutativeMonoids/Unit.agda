@@ -5,13 +5,16 @@ open import Level using (Level; Lift; lift; _⊔_)
 module CommutativeMonoids.Unit {c ℓ : Level} where
 
 import Algebra.Properties.CommutativeMonoid.Mult as Mult
-import CommutativeMonoids.Coequalizer {c} {c ⊔ ℓ} as Coeq
-import CommutativeMonoids.TensorProduct as ⊗
+import CommutativeMonoids.Coequalizer.FromFree {c} {ℓ} as Coeq
+import CommutativeMonoids.Congruence {c} {c ⊔ ℓ} as Cong
+import CommutativeMonoids.CongruenceClosure {c} {ℓ} as CongruenceClosure
+import CommutativeMonoids.TensorProduct {c} {ℓ} as ⊗
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 open import Algebra using (CommutativeMonoid)
 open import Algebra.Construct.DirectProduct using () renaming (commutativeMonoid to _⊕_)
 open import CommutativeMonoids.Category using (CommutativeMonoids; CommutativeMonoidHomomorphism; mk-⇒)
+open import CommutativeMonoids.FormalSum c (c ⊔ ℓ) using (⅀)
 open import CommutativeMonoids.FreeForget.Adjunction c ℓ using (singleton; sum)
 open import CommutativeMonoids.FreeForget.Forget c (c ⊔ ℓ) using () renaming (Underlying to U)
 open import Data.List using (List; [_]; map)
@@ -51,21 +54,26 @@ open Func
 
 module _ {M : CommutativeMonoid c (c ⊔ ℓ)} where
 
-  open ⊗ {c} {ℓ} ℕₘ M using (f; g; u!; fₘ; gₘ; I) renaming (M⊗N to ℕₘ⊗M)
-
-  open Coeq fₘ gₘ using (_≋_; ≋-setoid; ≡-fwd; ≡-bwd; ≋-refl; ∙-resp-≋)
-  open CommutativeMonoid M
+  open ⊗ ℕₘ M using (f; g; fₘ; gₘ; I; Iₛ; eval; module Universal′) renaming (M⊗N to ℕₘ⊗M)
+  open Coeq {Iₛ} {⅀ (ℕₘ ⊕ M)} f g using (_~_)
+  open Cong (⅀ (ℕₘ ⊕ M)) using (Congruence)
+  open CongruenceClosure (⅀ (ℕₘ ⊕ M)) _~_ using (_≋_; ≋-congˡ; ≋-congruence; step-fwd; step-bwd)
+  open Congruence ≋-congruence using () renaming (cong to ≋-cong)
+  open _~_
   open I
+
+  open CommutativeMonoid M
+  open CommutativeMonoidHomomorphism using (⟦⟧-cong)
   open Mult M using (_×_; ×-cong; ×-homo-0; ×-homo-+; ×-distrib-+; ×-idem)
-  open _≋_
   open ℕ
-  open ≈-Reasoning ≋-setoid
 
   private
     module ℕₘ⊗M = CommutativeMonoid ℕₘ⊗M
     module CMon = CommutativeMonoids
 
   open CMon using (_∘_; id)
+
+  open ≈-Reasoning ℕₘ⊗M.setoid
 
   pattern 0× a = lift 0 , a
   pattern 1× a = lift 1 , a
@@ -76,15 +84,13 @@ module _ {M : CommutativeMonoid c (c ⊔ ℓ)} where
       ; cong = λ (lift ≡n , ≈a) → ×-cong ≡n ≈a
       }
 
-
   ×-ε : (n : ℕ) → n × ε ≈ ε
   ×-ε zero = refl
   ×-ε (suc n) = trans (identityˡ (n × ε)) (×-ε n)
 
   λ⇒ : CommutativeMonoidHomomorphism ℕₘ⊗M M
   λ⇒ =
-      u!
-        M
+      Universal′.u!
         ×ₛ
         (λ {a} → ×-homo-0 a)
         (λ { {lift n} → ×-ε n })
@@ -97,30 +103,30 @@ module _ {M : CommutativeMonoid c (c ⊔ ℓ)} where
       ; isMonoidHomomorphism = record
           { isMagmaHomomorphism = record
               { isRelHomomorphism = record
-                  { cong = λ x≈y → base (cong (singleton (U (ℕₘ ⊕ M))) (lift ≡.refl , x≈y))
+                  { cong = λ x≈y → ⟦⟧-cong eval (cong (singleton (U (ℕₘ ⊕ M))) (lift ≡.refl , x≈y))
                   }
-              ; homo = λ x y → ≡-bwd [] [ ∙ʳ (lift 1) x y ]
+              ; homo = λ x y → step-bwd (f~g (∙ʳ (lift 1) x y))
               }
-          ; ε-homo = ≡-fwd [] [ εʳ (lift 1) ]
+          ; ε-homo = step-fwd (f~g (εʳ (lift 1)))
           }
       }
 
   ≋-n×a : (n : ℕ) (a : Carrier) → [ 1× (n × a) ] ≋ [ lift n , a ]
   ≋-n×a zero a = begin
-      [ 1× (0 × a) ]  ≈⟨ ≡-fwd [] [ εʳ (lift 1) ] ⟩
-      []              ≈⟨ ≡-bwd [] [ εˡ a ] ⟩
+      [ 1× (0 × a) ]  ≈⟨ step-fwd (f~g (εʳ (lift 1))) ⟩
+      []              ≈⟨ step-bwd (f~g (εˡ a)) ⟩
       [ 0× a ]        ∎
   ≋-n×a (suc n) a = begin
-      [ 1× (a ∙ n × a) ]    ≈⟨ ≡-bwd [] [ ∙ʳ (lift 1) a (n × a) ] ⟩
-      1× a ∷ [ 1× (n × a) ] ≈⟨ ∙-resp-≋ (≋-refl {[ 1× a ]}) (≋-n×a n a) ⟩
-      1× a ∷ [ lift n , a ] ≈⟨ ≡-fwd [] [ ∙ˡ (lift 1) (lift n) a ] ⟩
+      [ 1× (a ∙ n × a) ]    ≈⟨ step-bwd (f~g (∙ʳ (lift 1) a (n × a))) ⟩
+      1× a ∷ [ 1× (n × a) ] ≈⟨ ≋-congˡ {z = [ 1× a ]} (≋-n×a n a) ⟩
+      1× a ∷ [ lift n , a ] ≈⟨ step-fwd (f~g (∙ˡ (lift 1) (lift n) a)) ⟩
       [ lift (suc n) , a ]  ∎
 
   λ⇐∘λ⇒ : λ⇐ ∘ λ⇒ CMon.≈ id
-  λ⇐∘λ⇒ [] = ≡-fwd [] [ εʳ (lift 1) ]
+  λ⇐∘λ⇒ [] = step-fwd (f~g (εʳ (lift 1)))
   λ⇐∘λ⇒ ((lift n , a) ∷ xs) = begin
-      [ 1× (n × a ∙ sum M (map (to ×ₛ) xs)) ]       ≈⟨ ≡-bwd [] [ ∙ʳ (lift 1) (n × a) (sum M (map (to ×ₛ) xs)) ] ⟩
-      1× (n × a) ∷ [ 1× (sum M (map (to ×ₛ) xs)) ]  ≈⟨ ∙-resp-≋ (≋-n×a n a) (λ⇐∘λ⇒ xs) ⟩
+      [ 1× (n × a ∙ sum M (map (to ×ₛ) xs)) ]       ≈⟨ step-bwd (f~g (∙ʳ (lift 1) (n × a) (sum M (map (to ×ₛ) xs)))) ⟩
+      1× (n × a) ∷ [ 1× (sum M (map (to ×ₛ) xs)) ]  ≈⟨ ≋-cong (≋-n×a n a) (λ⇐∘λ⇒ xs) ⟩
       (lift n , a) ∷ xs                             ∎
 
   λ⇒∘λ⇐ : λ⇒ ∘ λ⇐ CMon.≈ id
