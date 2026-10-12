@@ -4,7 +4,7 @@ open import Level using (Level; _⊔_)
 open import Algebra using (CommutativeMonoid)
 open import CommutativeMonoids.Category using (CommutativeMonoidHomomorphism; CommutativeMonoids; mk-⇒)
 
-module CommutativeMonoids.TensorProduct.Morphism
+module CommutativeMonoids.Homomorphism.TensorProduct
     {c ℓ : Level}
     {A B C D : CommutativeMonoid c (c ⊔ ℓ)}
     (f : CommutativeMonoidHomomorphism A B)
