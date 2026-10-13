@@ -7,7 +7,7 @@ module CommutativeMonoids.TensorProduct.Bifunctor {c ℓ : Level} where
 open import Categories.Functor using (Functor)
 open import Categories.Functor.Bifunctor using (Bifunctor)
 open import CommutativeMonoids.Category using (CommutativeMonoidHomomorphism) renaming (CommutativeMonoids to CMon)
-open import CommutativeMonoids.TensorProduct {c} {ℓ} using () renaming (M⊗N to infixr 10 _⊗₀_) public
+open import CommutativeMonoids.Construction.TensorProduct {c} {ℓ} using () renaming (M⊗N to infixr 10 _⊗₀_) public
 open import CommutativeMonoids.Homomorphism.TensorProduct {c} {ℓ} using () renaming (f⊗g to infixr 10 _⊗₁_) public
 open import CommutativeMonoids.Homomorphism.TensorProduct.Properties {c} {ℓ} using (⊗₁-resp-id; ⊗₁-resp-∘; ⊗₁-resp-≈)
 open import Data.Product using (uncurry′; _,_)

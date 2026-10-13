@@ -6,14 +6,14 @@ open import CommutativeMonoids.Category
   using (CommutativeMonoids ; CommutativeMonoidHomomorphism; _≗_)
   renaming (module CommutativeMonoids to CMon)
 
-module CommutativeMonoids.Coequalizer
+module CommutativeMonoids.Category.Coequalizer
     {c ℓ : Level}
     {A B : CommutativeMonoid c (c ⊔ ℓ)}
     (f g : CommutativeMonoidHomomorphism A B)
   where
 
-import CommutativeMonoids.CongruenceClosure {c} {ℓ} as CongruenceClosure
-import CommutativeMonoids.Quotient as Quotient
+import CommutativeMonoids.Construction.CongruenceClosure {c} {ℓ} as CongruenceClosure
+import CommutativeMonoids.Construction.Quotient as Quotient
 
 open import Categories.Diagram.Coequalizer (CommutativeMonoids c (c ⊔ ℓ)) using (Coequalizer)
 open import CommutativeMonoids.Congruence using (Congruence)

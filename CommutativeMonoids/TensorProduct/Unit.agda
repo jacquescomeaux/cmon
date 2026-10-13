@@ -2,7 +2,7 @@
 
 open import Level using (Level; Lift; lift)
 
-module CommutativeMonoids.Unit (c ℓ : Level) where
+module CommutativeMonoids.TensorProduct.Unit (c ℓ : Level) where
 
 open import Algebra using (CommutativeMonoid)
 open import Data.Nat using (ℕ; _+_)

@@ -4,7 +4,7 @@ open import Algebra using (CommutativeMonoid)
 open import CommutativeMonoids.Congruence using (Congruence)
 open import Level using (Level; _⊔_)
 
-module CommutativeMonoids.Quotient
+module CommutativeMonoids.Construction.Quotient
     {c ℓ : Level}
     (M : CommutativeMonoid c ℓ)
     (≋ : Congruence M)

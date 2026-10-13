@@ -4,12 +4,12 @@ open import Level using (Level; _⊔_)
 
 module CommutativeMonoids.Homomorphism.TensorProduct.Properties {c ℓ : Level} where
 
-import CommutativeMonoids.TensorProduct {c} {ℓ} as ⊗
+import CommutativeMonoids.Construction.TensorProduct {c} {ℓ} as ⊗
 import CommutativeMonoids.Homomorphism.TensorProduct {c} {ℓ} as ⊗-⇒
 
 open import Algebra using (CommutativeMonoid)
 open import CommutativeMonoids.Category using (CommutativeMonoids; CommutativeMonoidHomomorphism)
-open import CommutativeMonoids.FormalSum c ℓ using (FormalSum)
+open import CommutativeMonoids.Construction.FormalSum c ℓ using (FormalSum)
 open import CommutativeMonoids.Homomorphism.TensorProduct {c} {ℓ} using () renaming (f⊗g to infixr 10 _⊗₁_)
 open import Data.List.Properties using (map-∘; map-cong; map-id)
 open import Data.Product using (dmap)

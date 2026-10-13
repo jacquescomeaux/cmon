@@ -4,7 +4,7 @@ open import Algebra using (CommutativeMonoid)
 open import Level using (Level; _⊔_)
 open import Relation.Binary using (Rel; IsEquivalence; Setoid; _Preserves_⟶_)
 
-module CommutativeMonoids.CongruenceClosure
+module CommutativeMonoids.Construction.CongruenceClosure
     {c ℓ ℓ′ : Level}
     (M : CommutativeMonoid c (c ⊔ ℓ ⊔ ℓ′))
     (open CommutativeMonoid M)

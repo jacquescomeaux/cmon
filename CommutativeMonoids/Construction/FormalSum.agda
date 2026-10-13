@@ -2,7 +2,7 @@
 
 open import Level using (Level; _⊔_)
 
-module CommutativeMonoids.FormalSum (c ℓ : Level) where
+module CommutativeMonoids.Construction.FormalSum (c ℓ : Level) where
 
 open import Algebra using (CommutativeMonoid)
 open import Categories.Adjoint.Properties using (adjoint⇒comonad)
@@ -19,7 +19,7 @@ module FormalSum = Comonad FormalSum
 ⅀ : CommutativeMonoid c (c ⊔ ℓ) → CommutativeMonoid c (c ⊔ ℓ)
 ⅀ = FormalSum.F.₀
 
-module _ (M : CommutativeMonoid c (c ⊔ ℓ)) where
+module _ {M : CommutativeMonoid c (c ⊔ ℓ)} where
 
   evalₘ : CommutativeMonoidHomomorphism (⅀ M) M
   evalₘ = FormalSum.ε.η M

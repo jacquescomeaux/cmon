@@ -3,7 +3,7 @@
 open import Level using (Level; _⊔_)
 open import Algebra using (CommutativeMonoid)
 
-module CommutativeMonoids.TensorProduct {c ℓ : Level} (M N : CommutativeMonoid c (c ⊔ ℓ)) where
+module CommutativeMonoids.Construction.TensorProduct {c ℓ : Level} (M N : CommutativeMonoid c (c ⊔ ℓ)) where
 
 import Data.List.Relation.Binary.Equality.Setoid as ≋
 import Data.List.Relation.Binary.Permutation.Algorithmic as Permutation
@@ -12,8 +12,8 @@ open import Algebra using (CommutativeMonoid)
 open import Algebra.Construct.DirectProduct using () renaming (commutativeMonoid to _⊕_)
 open import Categories.Diagram.Coequalizer using (Coequalizer)
 open import CommutativeMonoids.Category using (CommutativeMonoids; CommutativeMonoidHomomorphism)
-open import CommutativeMonoids.Coequalizer.FromFree {c} {ℓ} using (coequalizer)
-open import CommutativeMonoids.FormalSum c ℓ using (⅀)
+open import CommutativeMonoids.Category.Coequalizer.FromFree {c} {ℓ} using (coequalizer)
+open import CommutativeMonoids.Construction.FormalSum c ℓ using (⅀)
 open import CommutativeMonoids.FreeForget.Adjunction c ℓ using (Free⊣Forget; foldMap; onGenerators)
 open import CommutativeMonoids.FreeForget.Forget c (c ⊔ ℓ) using () renaming (Underlying to U)
 open import CommutativeMonoids.FreeForget.Free c (c ⊔ ℓ) using (Free) renaming (FreeCommutativeMonoid to F)

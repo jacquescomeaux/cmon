@@ -5,19 +5,19 @@ open import Level using (Level; Lift; lift; _⊔_)
 module CommutativeMonoids.Homomorphism.Unitors {c ℓ : Level} where
 
 import Algebra.Properties.CommutativeMonoid.Mult as Mult
-import CommutativeMonoids.Coequalizer.FromFree {c} {ℓ} as Coeq
+import CommutativeMonoids.Category.Coequalizer.FromFree {c} {ℓ} as Coeq
 import CommutativeMonoids.Congruence {c} {c ⊔ ℓ} as Cong
-import CommutativeMonoids.CongruenceClosure {c} {ℓ} as CongruenceClosure
-import CommutativeMonoids.TensorProduct {c} {ℓ} as ⊗
+import CommutativeMonoids.Construction.CongruenceClosure {c} {ℓ} as CongruenceClosure
+import CommutativeMonoids.Construction.TensorProduct {c} {ℓ} as ⊗
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 open import Algebra using (CommutativeMonoid)
 open import Algebra.Construct.DirectProduct using () renaming (commutativeMonoid to _⊕_)
 open import CommutativeMonoids.Category using (CommutativeMonoids; CommutativeMonoidHomomorphism; mk-⇒)
-open import CommutativeMonoids.FormalSum c (c ⊔ ℓ) using (⅀)
+open import CommutativeMonoids.Construction.FormalSum c (c ⊔ ℓ) using (⅀)
 open import CommutativeMonoids.FreeForget.Adjunction c ℓ using (singleton; sum)
 open import CommutativeMonoids.FreeForget.Forget c (c ⊔ ℓ) using () renaming (Underlying to U)
-open import CommutativeMonoids.Unit c (c ⊔ ℓ) using (ℕₘ)
+open import CommutativeMonoids.TensorProduct.Unit c (c ⊔ ℓ) using (ℕₘ)
 open import Data.List using (List; [_]; map)
 open import Data.Nat using (ℕ; _+_)
 open import Data.Product using (_,_)

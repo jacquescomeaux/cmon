@@ -11,12 +11,12 @@ module CommutativeMonoids.Homomorphism.TensorProduct
     (g : CommutativeMonoidHomomorphism C D)
   where
 
-import CommutativeMonoids.Coequalizer.FromFree {c} {ℓ} as Coeq
-import CommutativeMonoids.CongruenceClosure {c} {ℓ} as CongruenceClosure
-import CommutativeMonoids.TensorProduct {c} {ℓ} as ⊗
+import CommutativeMonoids.Category.Coequalizer.FromFree {c} {ℓ} as Coeq
+import CommutativeMonoids.Construction.CongruenceClosure {c} {ℓ} as CongruenceClosure
+import CommutativeMonoids.Construction.TensorProduct {c} {ℓ} as ⊗
 
 open import Algebra.Construct.DirectProduct using () renaming (commutativeMonoid to _⊕_)
-open import CommutativeMonoids.FormalSum c ℓ using (⅀; FormalSum)
+open import CommutativeMonoids.Construction.FormalSum c ℓ using (⅀; FormalSum)
 open import Data.Product using (_,_) renaming (map to ×-map)
 open import Function using (Func)
 open import Relation.Binary.Construct.Closure.Symmetric using (SymClosure)

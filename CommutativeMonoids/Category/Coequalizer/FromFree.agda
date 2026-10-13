@@ -10,7 +10,7 @@ open import Relation.Binary using (Setoid; Rel)
 
 -- Coequalizers for f g : A ⇒ B where the commutative monoid
 -- structure on A is explicitly ignored
-module CommutativeMonoids.Coequalizer.FromFree
+module CommutativeMonoids.Category.Coequalizer.FromFree
     {c ℓ : Level}
     (open Fr c (c ⊔ ℓ) using () renaming (FreeCommutativeMonoid to F))
     (open Fo c (c ⊔ ℓ) using () renaming (Underlying to U))
@@ -19,8 +19,8 @@ module CommutativeMonoids.Coequalizer.FromFree
     (f g : A ⟶ₛ U B)
   where
 
-import CommutativeMonoids.CongruenceClosure {c} {ℓ} as CongruenceClosure
-import CommutativeMonoids.Quotient as Quotient
+import CommutativeMonoids.Construction.CongruenceClosure {c} {ℓ} as CongruenceClosure
+import CommutativeMonoids.Construction.Quotient as Quotient
 import Relation.Binary.Reasoning.Setoid as ≈-Reasoning
 
 open import CommutativeMonoids.Category
