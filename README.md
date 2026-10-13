@@ -45,7 +45,7 @@ it collapses a multiset of multisets (something of type `MSet (MSet A)`)
 into a single multiset (of type `MSet A`).
 
 Dually, a round trip starting from __CMon__
-gives a comonad on CMon,
+gives a comonad on __CMon__,
 the _formal sum_ comonad, `⅀ = Free ∘ U`.
 For a commutative monoid `M`,
 `⅀ M` is a commutative monoid whose
