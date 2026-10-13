@@ -5,13 +5,10 @@ open import Level using (Level)
 module CommutativeMonoids.Construction.DirectProduct (c ℓ : Level) where
 
 open import Algebra using (CommutativeMonoid)
-open import Algebra.Construct.DirectProduct
-  using ()
-  renaming (commutativeMonoid to infixr 7 _×_)
-  public
+open import Algebra.Construct.DirectProduct using (commutativeMonoid)
 
--- Also provide ⊕ notation to emphasize role as biproduct
-_⊕_ : CommutativeMonoid c ℓ → CommutativeMonoid c ℓ → CommutativeMonoid c ℓ
-_⊕_ M N = M × N
+-- Direct product of commutative monoids
+_×_ : CommutativeMonoid c ℓ → CommutativeMonoid c ℓ → CommutativeMonoid c ℓ
+_×_ = commutativeMonoid
 
-infixr 7 _⊕_
+infixr 7 _×_
